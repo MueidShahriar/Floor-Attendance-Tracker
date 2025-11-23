@@ -186,14 +186,15 @@ body, .dark body {
     font-size: 2rem;
     font-weight: 700;
     text-align: center;
-    color: #6366f1;
-    background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
-    border: 1px solid rgba(15,23,42,0.06);
-    border-radius: 12px;
-    padding: 8px 10px;
+    color: #4c52f4;
+    background: linear-gradient(180deg, #fdfefe 0%, #f6f8ff 100%);
+    border: 1px solid rgba(99, 102, 241, 0.18);
+    border-radius: 14px;
+    padding: 12px 16px;
     transition: all 0.18s ease;
-    width: clamp(72px, 12vw, 120px);
-    min-width: 64px;
+    width: clamp(90px, 16vw, 150px);
+    min-width: 80px;
+    box-shadow: 0 6px 18px rgba(76, 82, 244, 0.08);
 }
 
 /* Progress bar styles */
@@ -425,14 +426,15 @@ input[type="date"] {
 @media (max-width: 640px) {
     .room-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .app-header { flex-direction: column; align-items: flex-start; gap: 8px; }
-}
+    .input-number {
+        font-size: 2rem;
+        padding: 12px 16px;
+        width: clamp(90px, 32vw, 150px);
+        min-width: 80px;
+    }
 
-/* Make the date picker area explicit: stack label, date input and button on separate lines */
-.date-row {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    align-items: stretch;
+    #total-count-display { font-size: 2.8rem; }
+    .room-card { padding: 10px; }
 }
 .date-row label {
     white-space: normal;
@@ -482,20 +484,25 @@ input[type="date"] {
     .app-header h1 { font-size: 1.125rem; }
     .app-header p { font-size: 0.7rem; }
 
-    /* Room grid tighter */
-    .room-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    /* Room cards stretch full width for easier tapping */
+    .room-grid { grid-template-columns: repeat(1, 1fr); gap: 14px; }
 
-    .room-card { padding: 12px; }
+    .room-card { padding: 16px; border-radius: 18px; }
 
     /* Inputs larger clickable area */
-    .input-number { font-size: 1.5rem; padding: 10px; width: clamp(64px, 18vw, 100px); }
+    .input-number {
+        font-size: 2rem;
+        padding: 12px 16px;
+        width: clamp(90px, 45vw, 150px);
+        min-width: 80px;
+    }
 
     /* Progress bar slightly smaller */
     .progress-track { height: 8px; }
     .progress-label { font-size: 11px; }
 
     /* Make total count slightly smaller to fit */
-    #total-count-display { font-size: 3.25rem; }
+    #total-count-display { font-size: 3.5rem; }
 
     /* Buttons stretch to comfortable tap targets */
     .btn, .btn-lg { padding: 10px 12px; font-size: 0.95rem; }
@@ -508,9 +515,14 @@ input[type="date"] {
     /* Very small devices: single column room cards */
     .room-grid { grid-template-columns: repeat(1, 1fr); gap: 8px; }
 
-    .input-number { font-size: 1.35rem; padding: 8px; width: clamp(60px, 24vw, 90px); }
+    .input-number {
+        font-size: 2rem;
+        padding: 12px 16px;
+        width: clamp(90px, 60vw, 150px);
+        min-width: 80px;
+    }
 
-    #total-count-display { font-size: 2.6rem; }
+    #total-count-display { font-size: 3.1rem; }
 
     .app-header h1 { font-size: 1rem; }
     .app-header p { font-size: 0.65rem; }
@@ -644,14 +656,20 @@ input[type="date"] {
 
 /* Extra compact mobile adjustments (tighten sizes and spacing) */
 @media (max-width: 420px) {
-    /* slightly denser grid and tighter gaps */
-    .room-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    /* single-column cards for maximum width */
+    .room-grid { grid-template-columns: repeat(1, 1fr); gap: 12px; }
 
-    /* smaller room cards */
-    .room-card { padding: 10px; border-radius: 12px; }
+    /* larger room cards */
+    .room-card { padding: 14px; border-radius: 16px; }
 
     /* compact numeric input: fixed small square */
-    .input-number { font-size: 1.15rem; padding: 6px 8px; width: clamp(58px, 26vw, 80px); min-width: 58px; text-align: center; }
+    .input-number {
+        font-size: 2rem;
+        padding: 12px 16px;
+        width: clamp(90px, 55vw, 150px);
+        min-width: 80px;
+        text-align: center;
+    }
 
     .input-with-controls { gap: 6px; align-items: center; }
 
@@ -665,7 +683,7 @@ input[type="date"] {
     .progress-label { font-size: 10px; }
 
     /* slightly smaller total display */
-    #total-count-display { font-size: 2.4rem; }
+    #total-count-display { font-size: 2.8rem; }
 
     /* compact gradient card */
     .gradient-card { padding: 14px 12px; border-radius: 16px; }
@@ -680,20 +698,30 @@ input[type="date"] {
 @media (max-width: 320px) {
     /* ultra compact for very small devices */
     .room-grid { grid-template-columns: repeat(1, 1fr); gap: 6px; }
-    .input-number { width: clamp(52px, 32vw, 72px); min-width: 52px; font-size: 1.05rem; padding: 6px; }
-    #total-count-display { font-size: 2rem; }
+    .input-number {
+        width: clamp(90px, 70vw, 150px);
+        min-width: 80px;
+        font-size: 2rem;
+        padding: 12px 16px;
+    }
+    #total-count-display { font-size: 2.6rem; }
 }
 
 /* More aggressive compacting for small/mobile screens */
 @media (max-width: 420px) {
-    /* denser grid and tighter gaps */
-    .room-grid { grid-template-columns: repeat(2, 1fr); gap: 6px; }
+    /* keep single column but slightly tighter gap */
+    .room-grid { grid-template-columns: repeat(1, 1fr); gap: 10px; }
 
-    /* aggressively smaller room cards */
-    .room-card { padding: 8px; border-radius: 10px; min-height: 86px; }
+    /* ensure cards stay roomy */
+    .room-card { padding: 12px; border-radius: 14px; min-height: 110px; }
 
     /* very compact numeric input */
-    .input-number { font-size: 1.05rem; padding: 6px; width: clamp(50px, 34vw, 70px); min-width: 50px; }
+    .input-number {
+        font-size: 2rem;
+        padding: 12px 16px;
+        width: clamp(90px, 55vw, 150px);
+        min-width: 80px;
+    }
 
     .input-with-controls { gap: 6px; align-items: center; }
 
@@ -707,7 +735,7 @@ input[type="date"] {
     .progress-label { font-size: 10px; }
 
     /* smaller total display and card */
-    #total-count-display { font-size: 2.1rem; }
+    #total-count-display { font-size: 2.7rem; }
     .gradient-card { padding: 10px 10px; border-radius: 12px; }
 
     /* remove extra header detail to save vertical space */
@@ -736,8 +764,13 @@ input[type="date"] {
 @media (max-width: 360px) {
     /* single column and extra compact */
     .room-grid { grid-template-columns: repeat(1, 1fr); gap: 6px; }
-    .input-number { width: clamp(46px, 40vw, 64px); min-width: 46px; font-size: 0.95rem; }
+    .input-number {
+        width: clamp(90px, 65vw, 150px);
+        min-width: 80px;
+        font-size: 2rem;
+        padding: 12px 16px;
+    }
     .mobile-controls .inc-btn, .mobile-controls .dec-btn { width: 22px; height: 22px; }
-    #total-count-display { font-size: 1.9rem; }
+    #total-count-display { font-size: 2.5rem; }
     .room-card { padding: 6px; }
 }
