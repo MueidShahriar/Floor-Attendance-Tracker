@@ -184,14 +184,14 @@ body, .dark body {
     border-radius: 12px;
     padding: 8px 10px;
     transition: all 0.18s ease;
-    width: 72px;
+    width: 180px
 }
 
 /* Progress bar styles */
 .progress-track {
     background: rgba(15,23,42,0.05);
     border-radius: 999px;
-    height: 8px;
+    height: 4px;
     overflow: hidden;
 }
 
@@ -418,15 +418,46 @@ input[type="date"] {
     .app-header { flex-direction: column; align-items: flex-start; gap: 8px; }
 }
 
-/* Responsive rules for the date row to avoid overflow/wrapping */
-.date-row { flex-wrap: wrap; align-items: center; }
-.date-row label { white-space: nowrap; margin-right: 6px; }
-.date-row input[type="date"] { min-width: 0; flex: 0 0 auto; max-width: 180px; }
-
-@media (max-width: 480px) {
-    .date-row input[type="date"] { max-width: 140px; font-size: 0.95rem; padding: 6px 8px; }
-    .date-row .btn, .date-row button { padding: 8px 10px; }
+/* Make the date picker area explicit: stack label, date input and button on separate lines */
+.date-row {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: stretch;
 }
+.date-row label {
+    white-space: normal;
+    margin-right: 0;
+    display: block;
+}
+.date-row input[type="date"] {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+.date-row button,
+.date-row .btn {
+    width: 100%;
+}
+
+@media (min-width: 768px) {
+    /* on wider screens keep them stacked but narrower for aesthetics */
+    .date-row { max-width: 420px; }
+    .date-row button, .date-row .btn { width: auto; align-self: flex-end; }
+}
+
+/* Force a strict 3-line layout for the date area across all sizes.
+   This ensures: line1 = label, line2 = date input, line3 = Today button. */
+.date-row {
+    flex-direction: column !important;
+}
+.date-row label { display: block; }
+.date-row input[type="date"] { display: block; width: 100% !important; max-width: 100% !important; }
+.date-row button, .date-row .btn { display: block; width: 100% !important; }
+
+/* Keep a little spacing so the stacked rows look clean */
+.date-row > * { margin: 0; }
+.date-row > * + * { margin-top: 8px; }
 
 /* Android / small-screen improvements */
 @media (max-width: 480px) {
