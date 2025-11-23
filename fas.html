@@ -23,36 +23,50 @@
         </div>
 
         <div class="max-w-6xl mx-auto mb-6">
-            <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-6 text-center">Floor Attendance Manager</h1>
+            <header class="app-header bg-white/60 backdrop-blur-md p-4 rounded-2xl shadow-sm flex items-center justify-between gap-4 mb-6">
+                <div class="flex items-center gap-4">
+                    <div class="logo text-2xl">📋</div>
+                    <div>
+                        <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-900">Floor Attendance Manager</h1>
+                        <p class="text-xs text-gray-500">Realtime floor-level attendance tracking</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <button id="theme-toggle" aria-pressed="false" class="btn btn-ghost" title="Toggle theme">🌓 Theme</button>
+                </div>
+            </header>
 
             <div class="bg-white p-4 rounded-2xl shadow-md mb-6">
-                <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                    <label for="date-picker" class="text-sm font-semibold text-gray-700">View Attendance for:</label>
-                    <input 
-                        type="date" 
-                        id="date-picker" 
-                        class="px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none transition-colors text-gray-700 font-medium"
-                    />
-                    <button 
-                        id="today-btn" 
-                        class="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium shadow-sm"
-                    >
-                        Today
-                    </button>
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div class="flex items-center gap-3">
+                        <label for="date-picker" class="text-sm font-semibold text-gray-700">View Attendance for:</label>
+                        <input 
+                            type="date" 
+                            id="date-picker" 
+                            class="px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none transition-colors text-gray-700 font-medium"
+                        />
+                        <button 
+                            id="today-btn" 
+                            class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium shadow-sm"
+                        >
+                            Today
+                        </button>
+                    </div>
+                    <p id="view-mode-indicator" class="text-xs mt-1 text-gray-500"></p>
                 </div>
-                <p id="view-mode-indicator" class="text-xs text-center mt-3 text-gray-500"></p>
             </div>
 
-            <div id="total-attendance-card" class="gradient-card p-6 sm:p-8 rounded-3xl shadow-xl">
+            <div id="total-attendance-card" class="gradient-card p-6 sm:p-8 rounded-3xl shadow-xl mb-4">
                 <p class="text-sm uppercase font-medium text-white/90 mb-2 text-center tracking-wider">Total Students Present on Floor</p>
                 <div class="flex justify-center items-center">
                     <span id="total-count-display" class="text-6xl sm:text-7xl font-bold text-white">...</span>
                 </div>
             </div>
-            
-            <p id="loading-status" class="text-sm text-gray-600 mt-4 text-center">Initializing database and loading data...</p>
+
+            <p id="loading-status" class="text-sm text-gray-600 mt-2 text-center">Initializing database and loading data...</p>
             <p id="date-display" class="text-xs text-gray-500 mt-2 text-center"></p>
-            <p class="text-sm font-bold text-red-600 mt-2 text-center">Note: Attendance input is only allowed between 7:00 PM to 9:00 PM.</p>
+            <p id="time-note" class="text-sm font-bold text-red-600 mt-2 text-center">Note: Attendance input is only allowed between 7:00 PM to 9:00 PM.</p>
         </div>
 
         <div id="room-container" class="max-w-6xl mx-auto">
@@ -135,6 +149,9 @@
             reminder2: false,
             reminder3: false
         };
+        // Set to `false` to disable the 7:00 PM - 9:00 PM time restriction
+        // If `true`, attendance updates are only allowed between 19:00-21:00 local time.
+        const ALLOW_TIME_LIMIT = false;
         let activityLog = [];
 
         const ROOMS = Array.from({ length: 16 }, (_, i) => 402 + i);
@@ -167,6 +184,7 @@
         }
 
         function isWithinAllowedTime() {
+            if (!ALLOW_TIME_LIMIT) return true;
             const now = new Date();
             const currentHour = now.getHours();
             return currentHour >= 19 && currentHour < 21;
@@ -478,7 +496,10 @@
             card.id = docId;
             card.className = 'room-card p-5 rounded-2xl';
             card.innerHTML = `
-                <div class="text-lg font-bold text-gray-800 mb-3">Room ${roomNumber}</div>
+                <div class="flex items-center justify-between mb-3">
+                    <div class="text-lg font-bold text-gray-800">Room ${roomNumber}</div>
+                    <div class="room-badge" id="badge-${roomNumber}">-</div>
+                </div>
                 <div class="text-sm text-gray-500 mb-2">Students Present:</div>
                 <input
                     type="number"
@@ -490,6 +511,12 @@
                     class="input-number"
                     ${!isEditable ? 'disabled' : ''}
                 />
+                <div class="mt-3">
+                    <div class="progress-track" id="progress-${roomNumber}">
+                        <div class="progress-fill" style="width: 0%;"></div>
+                    </div>
+                    <div class="progress-label text-xs text-gray-500 mt-1" id="progress-label-${roomNumber}">0/6</div>
+                </div>
             `;
 
             const inputElement = card.querySelector(`#input-${roomNumber}`);
@@ -502,13 +529,16 @@
                 inputElement.style.opacity = '0.6';
                 inputElement.style.cursor = 'not-allowed';
             }
-            
+            // set status badge based on current count
+            updateRoomBadge(roomNumber, currentCount);
+
             roomGrid.appendChild(card);
         }
 
         function calculateTotal(attendanceData) {
             const total = attendanceData.reduce((sum, doc) => sum + (doc.present_count || 0), 0);
             totalCountDisplay.textContent = total;
+            animateTotalChange();
             
             if (isViewingToday) {
                 checkCapacityAndNotify(total);
@@ -560,6 +590,8 @@
                     const roomData = data[roomKey];
                     const presentCount = roomData ? (roomData.present_count || 0) : 0;
                     renderRoomCard(room, presentCount);
+                    // update progress for each room after rendering
+                    setTimeout(() => updateRoomProgress(room, presentCount), 50);
                 });
 
                 const attendanceArray = Object.values(data);
@@ -710,6 +742,23 @@
                 
                 await logActivity('update', `Room ${roomNumber} attendance set to ${count} students`);
 
+                // show a thank-you notification and animate input briefly
+                // optimistic UI updates: badge, progress and small input animation
+                showNotification(`Thank you-Room ${roomNumber} updated (${count})`, 'success', 2500);
+
+                try {
+                    updateRoomBadge(roomNumber, count);
+                    updateRoomProgress(roomNumber, count);
+                    const inputEl = document.getElementById(`input-${roomNumber}`);
+                    if (inputEl) {
+                        inputEl.classList.add('input-saved');
+                        setTimeout(() => inputEl.classList.remove('input-saved'), 900);
+                    }
+                } catch (e) {
+                    // non-fatal
+                    console.warn('UI update after save failed', e);
+                }
+
             } catch (error) {
                 displayError(`Failed to update attendance for Room ${roomNumber}: ${error.message}`);
             }
@@ -743,6 +792,77 @@
 
         initializeFirebase();
         initializeDatePicker();
+
+        // (Time-note left as static in the HTML; no dynamic override applied)
+
+        // Theme and badge helpers
+        const themeToggle = document.getElementById('theme-toggle');
+
+        function applyTheme(isDark) {
+            if (isDark) {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('fas_theme', 'dark');
+                themeToggle.setAttribute('aria-pressed', 'true');
+            } else {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('fas_theme', 'light');
+                themeToggle.setAttribute('aria-pressed', 'false');
+            }
+        }
+
+        function initTheme() {
+            const saved = localStorage.getItem('fas_theme');
+            const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            applyTheme(saved === 'dark' || (!saved && prefersDark));
+        }
+
+        themeToggle.addEventListener('click', () => {
+            const isDark = document.documentElement.classList.contains('dark');
+            applyTheme(!isDark);
+        });
+
+        function updateRoomBadge(roomNumber, count) {
+            const badge = document.getElementById(`badge-${roomNumber}`);
+            if (!badge) return;
+            badge.className = 'room-badge';
+            if (count >= 6) {
+                badge.textContent = 'Full';
+                badge.classList.add('badge-full');
+            } else if (count >= 5) {
+                badge.textContent = 'Near-full';
+                badge.classList.add('badge-warning');
+            } else {
+                badge.textContent = 'Open';
+                badge.classList.add('badge-normal');
+            }
+        }
+
+        function updateRoomProgress(roomNumber, count) {
+            const track = document.getElementById(`progress-${roomNumber}`);
+            const label = document.getElementById(`progress-label-${roomNumber}`);
+            if (!track || !label) return;
+            const capacity = 6;
+            const percent = Math.min(100, Math.round((count / capacity) * 100));
+            const fill = track.querySelector('.progress-fill');
+            if (fill) {
+                fill.style.width = percent + '%';
+                fill.setAttribute('aria-valuenow', count);
+            }
+            label.textContent = `${count}/${capacity}`;
+        }
+
+        // animate count change for total
+        function animateTotalChange() {
+            const el = document.getElementById('total-count-display');
+            if (!el) return;
+            el.classList.remove('count-pop');
+            // trigger reflow
+            void el.offsetWidth;
+            el.classList.add('count-pop');
+        }
+
+        // Initialize theme on load
+        initTheme();
 
     </script>
 </body>

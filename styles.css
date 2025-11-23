@@ -6,6 +6,85 @@ body {
     min-height: 100vh;
 }
 
+:root {
+    --bg: #f1f5f9;
+    --card: #ffffff;
+    --muted: #6b7280;
+    --accent: #6366f1;
+    --danger: #ef4444;
+}
+
+.dark {
+    --bg: #0b1220;
+    --card: #071226;
+    --muted: #9ca3af;
+    --accent: #7c3aed;
+    --danger: #fb7185;
+}
+
+body, .dark body {
+    background-color: var(--bg);
+}
+
+/* App header */
+.app-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+/* Button system */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    border: none;
+    background: transparent;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.btn-ghost {
+    background: rgba(15, 23, 42, 0.04);
+    color: #0f172a;
+    border: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+.btn-primary {
+    background: linear-gradient(90deg, #6366f1 0%, #7c3aed 100%);
+    color: white;
+}
+
+.btn-danger {
+    background: linear-gradient(90deg, #ef4444 0%, #dc2626 100%);
+    color: white;
+    border: 1px solid rgba(0,0,0,0.06);
+}
+
+.btn-lg {
+    padding: 10px 16px;
+    font-size: 0.95rem;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(16,24,40,0.08);
+}
+
+.btn:focus {
+    outline: 3px solid rgba(99,102,241,0.14);
+    outline-offset: 2px;
+}
+
+.btn-danger:hover { transform: translateY(-2px) scale(1.01); }
+.btn-primary:hover { transform: translateY(-2px) scale(1.01); }
+
 .page-loader {
     position: fixed;
     top: 0;
@@ -69,8 +148,13 @@ body {
 
 .room-card {
     transition: all 0.2s ease;
-    background: white;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(180deg, #ffffff 0%, #fbfbff 100%);
+    border: 1px solid rgba(15, 23, 42, 0.04);
+    box-shadow: 0 6px 18px rgba(16, 24, 40, 0.06);
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .room-card:hover {
@@ -83,13 +167,141 @@ body {
     font-weight: 700;
     text-align: center;
     color: #6366f1;
-    background: #f1f5f9;
-    border: 2px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 12px;
+    background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+    border: 1px solid rgba(15,23,42,0.06);
+    border-radius: 14px;
+    padding: 10px 12px;
     transition: all 0.2s ease;
     width: 100%;
 }
+
+/* Progress bar styles */
+.progress-track {
+    background: rgba(15,23,42,0.05);
+    border-radius: 999px;
+    height: 10px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+    transition: width 400ms ease-in-out, background 200ms ease;
+}
+
+/* Total count pop animation */
+.count-pop {
+    animation: pop 520ms cubic-bezier(.2,.8,.2,1);
+}
+
+@keyframes pop {
+    0% { transform: scale(1); }
+    40% { transform: scale(1.18); }
+    100% { transform: scale(1); }
+}
+
+/* Footer */
+.app-footer {
+    max-width: 6xl;
+    margin: 28px auto 12px auto;
+    text-align: center;
+    color: #6b7280;
+    font-size: 0.875rem;
+}
+
+/* Datepicker small tweak */
+input[type="date"] {
+    appearance: none;
+}
+
+/* Dark mode fixes for progress and labels */
+.dark .progress-track { background: rgba(255,255,255,0.04); }
+.dark .progress-fill { background: linear-gradient(90deg, #34d399 0%, #10b981 100%); }
+.dark .progress-label { color: rgba(255,255,255,0.78); }
+
+/* brief saved animation for inputs */
+.input-saved {
+    transform: scale(1.01);
+    box-shadow: 0 8px 24px rgba(16,185,129,0.12);
+    border-color: rgba(16,185,129,0.36) !important;
+    transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+}
+
+/* Badges for room status */
+.room-badge {
+    font-size: 0.75rem;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-weight: 700;
+    color: white;
+    display: inline-block;
+    min-width: 64px;
+    text-align: center;
+}
+
+.badge-normal { background: linear-gradient(90deg, #10b981 0%, #059669 100%); }
+.badge-warning { background: linear-gradient(90deg, #f59e0b 0%, #d97706 100%); }
+.badge-full    { background: linear-gradient(90deg, #ef4444 0%, #dc2626 100%); }
+
+/* Dark mode overrides */
+.dark .room-card { background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.03)); border-color: rgba(255,255,255,0.04); box-shadow: none; }
+.dark .input-number { background: rgba(255,255,255,0.02); color: var(--accent); border-color: rgba(255,255,255,0.04); }
+.dark .gradient-card { background: linear-gradient(135deg, #4f46e5 0%, #6d28d9 100%); }
+.dark .app-header { background: rgba(255,255,255,0.02); }
+
+/* Make elements with `bg-white` adapt in dark mode */
+.dark .bg-white {
+    background: rgba(255,255,255,0.03) !important;
+    border: 1px solid rgba(255,255,255,0.04);
+}
+
+/* Inputs, selects and date pickers in dark mode */
+.dark input,
+.dark input[type="date"],
+.dark select,
+.dark textarea {
+    background: rgba(255,255,255,0.02) !important;
+    color: rgba(255,255,255,0.92) !important;
+    border: 1px solid rgba(255,255,255,0.06) !important;
+}
+
+/* Make native date-picker icon visible in dark mode */
+.dark input::-webkit-calendar-picker-indicator {
+    filter: invert(1) brightness(2) !important;
+}
+
+/* Ensure .btn-ghost is visible on dark backgrounds */
+.dark .btn-ghost {
+    background: rgba(255,255,255,0.03);
+    color: rgba(255,255,255,0.92);
+    border-color: rgba(255,255,255,0.06);
+}
+
+/* Ensure readable text in dark mode (override utility classes) */
+.dark body,
+.dark body * {
+    color: rgba(255,255,255,0.92) !important;
+}
+
+/* Target common gray text utility classes to ensure contrast */
+.dark .text-gray-900,
+.dark .text-gray-800,
+.dark .text-gray-700,
+.dark .text-gray-600,
+.dark .text-gray-500,
+.dark .text-gray-400,
+.dark .text-gray-300,
+.dark .text-gray-200 {
+    color: rgba(255,255,255,0.92) !important;
+}
+
+/* Keep muted small text slightly less bright */
+.dark .text-xs,
+.dark .text-sm {
+    color: rgba(255,255,255,0.78) !important;
+}
+
 
 .input-number:focus {
     background: white;
@@ -99,7 +311,9 @@ body {
 }
 
 .gradient-card {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #6366f1 0%, #7c3aed 100%);
+    position: relative;
+    overflow: hidden;
 }
 
 .notification {
@@ -144,6 +358,12 @@ body {
 .activity-log-item:hover {
     background-color: #f9fafb;
     transform: translateX(4px);
+}
+
+/* Responsive tweaks */
+@media (max-width: 640px) {
+    .room-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .app-header { flex-direction: column; align-items: flex-start; gap: 8px; }
 }
 
 .user-badge {
