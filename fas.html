@@ -23,7 +23,7 @@
         </div>
 
         <div class="max-w-6xl mx-auto mb-6">
-            <header class="app-header bg-white/60 backdrop-blur-md p-4 rounded-2xl shadow-sm flex items-center justify-between gap-4 mb-6">
+            <header class="app-header bg-white/60 backdrop-blur-md p-3 sm:p-4 rounded-2xl shadow-sm flex items-center justify-between gap-2 mb-3">
                 <div class="flex items-center gap-4">
                     <div class="logo text-2xl">📋</div>
                     <div>
@@ -37,8 +37,8 @@
                 </div>
             </header>
 
-            <div class="bg-white p-4 rounded-2xl shadow-md mb-6 max-w-xl mx-auto">
-                <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="bg-white p-3 sm:p-4 rounded-2xl shadow-md mb-3 max-w-xl mx-auto">
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-2">
                     <div class="date-row w-full sm:max-w-md">
                         <label for="date-picker" class="text-sm font-semibold text-gray-700">View Attendance for:</label>
                         <input 
@@ -56,16 +56,16 @@
                 </div>
             </div>
 
-            <div id="total-attendance-card" class="gradient-card p-6 sm:p-8 rounded-3xl shadow-xl mb-4">
+            <div id="total-attendance-card" class="gradient-card p-6 sm:p-8 rounded-3xl shadow-xl mb-0">
                 <p class="text-sm uppercase font-medium text-white/90 mb-2 text-center tracking-wider">Total Students Present on Floor</p>
                 <div class="flex justify-center items-center">
                     <span id="total-count-display" class="text-6xl sm:text-7xl font-bold text-white">0</span>
                 </div>
             </div>
 
-            <p id="loading-status" class="text-sm text-gray-600 mt-2 text-center">Initializing database and loading data...</p>
-            <p id="date-display" class="text-xs text-gray-500 mt-2 text-center"></p>
-            <p id="time-note" class="text-sm font-bold text-red-600 mt-2 text-center">Note: Attendance input is only allowed between 7:00 PM to 9:00 PM.</p>
+            <p id="loading-status" class="text-sm text-gray-600 mt-1 text-center">Initializing database and loading data...</p>
+            <p id="date-display" class="text-xs text-gray-500 mt-1 text-center"></p>
+            <p id="time-note" class="text-sm font-bold text-red-600 mt-1 text-center">Note: Attendance input is only allowed between 7:00 PM to 9:00 PM.</p>
         </div>
 
         <div id="room-container" class="max-w-6xl mx-auto">
