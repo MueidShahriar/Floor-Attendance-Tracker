@@ -151,7 +151,7 @@ body, .dark body {
     background: linear-gradient(180deg, #ffffff 0%, #fbfbff 100%);
     border: 1px solid rgba(15, 23, 42, 0.04);
     box-shadow: 0 6px 18px rgba(16, 24, 40, 0.06);
-    padding: 18px;
+    padding: 14px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -163,23 +163,23 @@ body, .dark body {
 }
 
 .input-number {
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-weight: 700;
     text-align: center;
     color: #6366f1;
     background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
     border: 1px solid rgba(15,23,42,0.06);
-    border-radius: 14px;
-    padding: 10px 12px;
-    transition: all 0.2s ease;
-    width: 100%;
+    border-radius: 12px;
+    padding: 8px 10px;
+    transition: all 0.18s ease;
+    width: 72px;
 }
 
 /* Progress bar styles */
 .progress-track {
     background: rgba(15,23,42,0.05);
     border-radius: 999px;
-    height: 10px;
+    height: 8px;
     overflow: hidden;
 }
 
@@ -243,6 +243,41 @@ input[type="date"] {
 .badge-normal { background: linear-gradient(90deg, #10b981 0%, #059669 100%); }
 .badge-warning { background: linear-gradient(90deg, #f59e0b 0%, #d97706 100%); }
 .badge-full    { background: linear-gradient(90deg, #ef4444 0%, #dc2626 100%); }
+
+/* compact dot-only badge for 'Open' rooms */
+.room-badge.badge-dot-only {
+    min-width: 0 !important;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent !important;
+    border: 1px solid rgba(15,23,42,0.06);
+}
+
+.badge-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+}
+
+/* color variants for dot badges */
+.badge-dot--normal { background: linear-gradient(90deg, #10b981 0%, #059669 100%); }
+.badge-dot--warning { background: linear-gradient(90deg, #f59e0b 0%, #d97706 100%); }
+.badge-dot--danger  { background: linear-gradient(90deg, #ef4444 0%, #dc2626 100%); }
+
+/* slightly larger dot for warning/danger to remain visible */
+.badge-dot--warning, .badge-dot--danger { width: 12px; height: 12px; }
+
+/* Hide visual badges entirely (no dot/text shown). Markup remains for accessibility or future use. */
+.room-badge {
+    display: none !important;
+}
 
 /* Dark mode overrides */
 .dark .room-card { background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.03)); border-color: rgba(255,255,255,0.04); box-shadow: none; }
@@ -543,4 +578,96 @@ input[type="date"] {
     width: auto;
     padding: 0.5rem 1rem;
     display: block;
+}
+
+/* Extra compact mobile adjustments (tighten sizes and spacing) */
+@media (max-width: 420px) {
+    /* slightly denser grid and tighter gaps */
+    .room-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+
+    /* smaller room cards */
+    .room-card { padding: 10px; border-radius: 12px; }
+
+    /* compact numeric input: fixed small square */
+    .input-number { font-size: 1.15rem; padding: 6px 8px; width: 64px; min-width: 64px; text-align: center; }
+
+    .input-with-controls { gap: 6px; align-items: center; }
+
+    /* move mobile controls to horizontal and make them smaller */
+    .mobile-controls { flex-direction: row; }
+    .mobile-controls .inc-btn,
+    .mobile-controls .dec-btn { width: 28px; height: 28px; font-size: 12px; border-radius: 6px; }
+
+    /* thinner progress bar */
+    .progress-track { height: 6px; }
+    .progress-label { font-size: 10px; }
+
+    /* slightly smaller total display */
+    #total-count-display { font-size: 2.4rem; }
+
+    /* compact gradient card */
+    .gradient-card { padding: 14px 12px; border-radius: 16px; }
+
+    /* hide small descriptive text in header to save vertical space */
+    .app-header p { display: none; }
+    .app-header { padding: 8px; gap: 6px; }
+
+    .room-badge { min-width: 44px; font-size: 0.65rem; padding: 4px 6px; }
+}
+
+@media (max-width: 320px) {
+    /* ultra compact for very small devices */
+    .room-grid { grid-template-columns: repeat(1, 1fr); gap: 6px; }
+    .input-number { width: 56px; min-width: 56px; font-size: 1.05rem; padding: 6px; }
+    #total-count-display { font-size: 2rem; }
+}
+
+/* More aggressive compacting for small/mobile screens */
+@media (max-width: 420px) {
+    /* denser grid and tighter gaps */
+    .room-grid { grid-template-columns: repeat(2, 1fr); gap: 6px; }
+
+    /* aggressively smaller room cards */
+    .room-card { padding: 8px; border-radius: 10px; min-height: 86px; }
+
+    /* very compact numeric input */
+    .input-number { font-size: 1.05rem; padding: 6px 6px; width: 56px; min-width: 56px; }
+
+    .input-with-controls { gap: 6px; align-items: center; }
+
+    /* place mobile controls horizontally and shrink */
+    .mobile-controls { flex-direction: row; gap: 6px; }
+    .mobile-controls .inc-btn,
+    .mobile-controls .dec-btn { width: 24px; height: 24px; font-size: 12px; border-radius: 6px; padding: 0; }
+
+    /* thinner progress bar */
+    .progress-track { height: 5px; }
+    .progress-label { font-size: 10px; }
+
+    /* smaller total display and card */
+    #total-count-display { font-size: 2.1rem; }
+    .gradient-card { padding: 10px 10px; border-radius: 12px; }
+
+    /* remove extra header detail to save vertical space */
+    .app-header p { display: none; }
+    .app-header { padding: 6px; gap: 6px; }
+
+    /* reduce badge footprint (hidden visually already but keep space small) */
+    .room-badge { width: 0; height: 0; padding: 0; margin: 0; }
+
+    /* reduce text sizes inside cards */
+    .room-card .text-lg { font-size: 1rem; }
+    .room-card .text-sm { font-size: 0.72rem; }
+
+    /* reduce box shadows a bit to lower visual weight */
+    .room-card { box-shadow: 0 3px 8px rgba(0,0,0,0.06); }
+}
+
+@media (max-width: 360px) {
+    /* single column and extra compact */
+    .room-grid { grid-template-columns: repeat(1, 1fr); gap: 6px; }
+    .input-number { width: 44px; min-width: 44px; font-size: 0.95rem; }
+    .mobile-controls .inc-btn, .mobile-controls .dec-btn { width: 22px; height: 22px; }
+    #total-count-display { font-size: 1.9rem; }
+    .room-card { padding: 6px; }
 }
