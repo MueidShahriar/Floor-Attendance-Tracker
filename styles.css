@@ -250,6 +250,11 @@ input[type="date"] {
 .dark .gradient-card { background: linear-gradient(135deg, #4f46e5 0%, #6d28d9 100%); }
 .dark .app-header { background: rgba(255,255,255,0.02); }
 
+/* Keep the time-note prominently red in dark mode */
+.dark #time-note {
+    color: #ef4444 !important;
+}
+
 /* Make elements with `bg-white` adapt in dark mode */
 .dark .bg-white {
     background: rgba(255,255,255,0.03) !important;
@@ -364,6 +369,82 @@ input[type="date"] {
 @media (max-width: 640px) {
     .room-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .app-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+}
+
+/* Android / small-screen improvements */
+@media (max-width: 480px) {
+    :root { --card-padding: 12px; }
+
+    body { padding: 0.5rem; }
+
+    .max-w-6xl { padding-left: 8px; padding-right: 8px; }
+
+    /* Make header compact and friendly for touch */
+    .app-header { padding: 12px; gap: 8px; }
+    .app-header .logo { font-size: 20px; }
+    .app-header h1 { font-size: 1.125rem; }
+    .app-header p { font-size: 0.7rem; }
+
+    /* Room grid tighter */
+    .room-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+
+    .room-card { padding: 12px; }
+
+    /* Inputs larger clickable area */
+    .input-number { font-size: 1.5rem; padding: 10px; }
+
+    /* Progress bar slightly smaller */
+    .progress-track { height: 8px; }
+    .progress-label { font-size: 11px; }
+
+    /* Make total count slightly smaller to fit */
+    #total-count-display { font-size: 3.25rem; }
+
+    /* Buttons stretch to comfortable tap targets */
+    .btn, .btn-lg { padding: 10px 12px; font-size: 0.95rem; }
+
+    /* Footer small */
+    .app-footer { font-size: 0.8rem; margin: 18px auto 8px auto; }
+}
+
+@media (max-width: 360px) {
+    /* Very small devices: single column room cards */
+    .room-grid { grid-template-columns: repeat(1, 1fr); gap: 8px; }
+
+    .input-number { font-size: 1.35rem; padding: 8px; }
+
+    #total-count-display { font-size: 2.6rem; }
+
+    .app-header h1 { font-size: 1rem; }
+    .app-header p { font-size: 0.65rem; }
+
+    .room-badge { min-width: 52px; font-size: 0.7rem; padding: 5px 8px; }
+}
+
+/* Controls styling */
+.mobile-controls .inc-btn,
+.mobile-controls .dec-btn {
+    width: 36px;
+    height: 28px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    border-radius: 8px;
+}
+
+.mobile-controls .inc-btn { transform: translateY(-1px); }
+.mobile-controls .dec-btn { transform: translateY(1px); }
+
+/* Ensure buttons are tappable on mobile */
+@media (max-width: 480px) {
+    .mobile-controls .inc-btn,
+    .mobile-controls .dec-btn {
+        width: 40px;
+        height: 34px;
+        font-size: 14px;
+    }
 }
 
 .user-badge {
