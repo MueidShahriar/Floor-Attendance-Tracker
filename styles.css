@@ -54,9 +54,9 @@ body, .dark body {
 }
 
 .btn-ghost {
-    background: rgba(15, 23, 42, 0.04);
+    background: transparent;
     color: #0f172a;
-    border: 1px solid rgba(15, 23, 42, 0.06);
+    border: none;
 }
 
 .btn-primary {
@@ -83,6 +83,19 @@ body, .dark body {
     border-radius: 999px;
     min-width: 0;
     gap: 4px;
+}
+
+.theme-toggle {
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    border: 1px solid rgba(99,102,241,0.3);
+    color: #4c52f4;
+    padding: 6px 14px;
+}
+
+.theme-toggle.is-dark {
+    border-color: rgba(255,255,255,0.6);
+    color: #f3f4ff;
 }
 
 .btn:focus {
