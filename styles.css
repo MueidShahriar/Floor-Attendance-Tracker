@@ -77,6 +77,14 @@ body, .dark body {
     box-shadow: 0 6px 18px rgba(16,24,40,0.08);
 }
 
+.btn-compact {
+    padding: 6px 8px;
+    font-size: 1rem;
+    border-radius: 999px;
+    min-width: 0;
+    gap: 4px;
+}
+
 .btn:focus {
     outline: 3px solid rgba(99,102,241,0.14);
     outline-offset: 2px;
