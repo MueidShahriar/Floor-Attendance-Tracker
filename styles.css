@@ -157,6 +157,18 @@ body, .dark body {
     justify-content: space-between;
 }
 
+/* Ensure room title stays on one line and number doesn't wrap */
+.room-title {
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 8px;
+}
+.room-title .room-number {
+    display: inline-block;
+    white-space: nowrap;
+}
+
 .room-card:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -404,6 +416,16 @@ input[type="date"] {
 @media (max-width: 640px) {
     .room-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .app-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+}
+
+/* Responsive rules for the date row to avoid overflow/wrapping */
+.date-row { flex-wrap: wrap; align-items: center; }
+.date-row label { white-space: nowrap; margin-right: 6px; }
+.date-row input[type="date"] { min-width: 0; flex: 0 0 auto; max-width: 180px; }
+
+@media (max-width: 480px) {
+    .date-row input[type="date"] { max-width: 140px; font-size: 0.95rem; padding: 6px 8px; }
+    .date-row .btn, .date-row button { padding: 8px 10px; }
 }
 
 /* Android / small-screen improvements */
@@ -661,6 +683,14 @@ input[type="date"] {
 
     /* reduce box shadows a bit to lower visual weight */
     .room-card { box-shadow: 0 3px 8px rgba(0,0,0,0.06); }
+}
+
+/* Hide the stacked inc/dec controls on narrow mobile screens to reduce clutter */
+@media (max-width: 420px) {
+    .mobile-controls { display: none !important; }
+    /* make sure input remains centered and clickable */
+    .input-with-controls { justify-content: center; }
+    .input-number { margin-right: 0; }
 }
 
 @media (max-width: 360px) {
