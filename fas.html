@@ -37,7 +37,7 @@
                 </div>
             </header>
 
-            <div class="bg-white p-4 rounded-2xl shadow-md mb-6">
+            <div class="bg-white p-4 rounded-2xl shadow-md mb-6 max-w-xl mx-auto">
                 <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
                     <div class="date-row w-full sm:max-w-md">
                         <label for="date-picker" class="text-sm font-semibold text-gray-700">View Attendance for:</label>
@@ -53,7 +53,6 @@
                             Today
                         </button>
                     </div>
-                    <p id="view-mode-indicator" class="text-xs mt-1 text-gray-500 text-center w-full sm:w-auto"></p>
                 </div>
             </div>
 
@@ -592,12 +591,14 @@
             
             dateDisplay.innerHTML = `Viewing Date: <strong>${formatDisplayDate(viewDateKey)}</strong>`;
             
-            if (isViewingToday) {
-                viewModeIndicator.innerHTML = '<strong>Live View</strong> - Data updates in real-time';
-                viewModeIndicator.className = 'text-xs text-center mt-3 text-green-600 font-medium';
-            } else {
-                viewModeIndicator.innerHTML = '<strong>Historical View</strong> - Read-only mode';
-                viewModeIndicator.className = 'text-xs text-center mt-3 text-blue-600 font-medium';
+            if (viewModeIndicator) {
+                if (isViewingToday) {
+                    viewModeIndicator.innerHTML = '<strong>Live View</strong> - Data updates in real-time';
+                    viewModeIndicator.className = 'text-xs text-center mt-3 text-green-600 font-medium';
+                } else {
+                    viewModeIndicator.innerHTML = '<strong>Historical View</strong> - Read-only mode';
+                    viewModeIndicator.className = 'text-xs text-center mt-3 text-blue-600 font-medium';
+                }
             }
             
             const attendanceRef = ref(db, `attendance/${viewDateKey}`);

@@ -192,7 +192,7 @@ body, .dark body {
 .progress-track {
     background: rgba(15,23,42,0.05);
     border-radius: 999px;
-    height: 4px;
+    height: 6px;
     overflow: hidden;
 }
 
