@@ -61,7 +61,7 @@
 
             <p id="loading-status" class="text-sm text-gray-600 mt-1 text-center">Initializing database and loading data...</p>
             <p id="date-display" class="text-xs text-gray-500 mt-1 text-center"></p>
-            <p id="time-note" class="text-sm font-bold text-red-600 mt-1 text-center">Note: Attendance input is only allowed between 7:00 PM to 9:00 PM.</p>
+            <p id="time-note" class="text-sm font-bold text-red-600 mt-1 text-center">Note: Attendance input is only allowed between 7:00 PM to 9:30 PM.</p>
         </div>
 
         <div id="room-container" class="max-w-6xl mx-auto">
@@ -144,9 +144,13 @@
             reminder2: false,
             reminder3: false
         };
-        // Set to `false` to disable the 7:00 PM - 9:00 PM time restriction
-        // If `true`, attendance updates are only allowed between 19:00-21:00 local time.
-        const ALLOW_TIME_LIMIT = false;
+        // Set to `false` to disable the 6:30 PM - 10:00 PM time restriction
+        // If `true`, attendance updates are only allowed between 18:30-22:00 local time.
+        const ALLOW_TIME_LIMIT = true;
+        const ALLOWED_START_MINUTES = (18 * 60) + 30; // 6:30 PM
+        const ALLOWED_END_MINUTES = 22 * 60;          // 10:00 PM
+        const SECOND_REMINDER_MINUTES = ALLOWED_END_MINUTES - 60; // 1 hour left
+        const FINAL_REMINDER_MINUTES = ALLOWED_END_MINUTES - 15;  // 15 minutes left
         let activityLog = [];
         // track currently displayed counts so we can update only changed rooms
         let displayedCounts = {};
@@ -180,11 +184,14 @@
             });
         }
 
+        function getMinutesSinceMidnight(date = new Date()) {
+            return date.getHours() * 60 + date.getMinutes();
+        }
+
         function isWithinAllowedTime() {
             if (!ALLOW_TIME_LIMIT) return true;
-            const now = new Date();
-            const currentHour = now.getHours();
-            return currentHour >= 19 && currentHour < 21;
+            const minutes = getMinutesSinceMidnight();
+            return minutes >= ALLOWED_START_MINUTES && minutes < ALLOWED_END_MINUTES;
         }
 
         const totalCountDisplay = document.getElementById('total-count-display');
@@ -373,26 +380,25 @@
             if (!isViewingToday) return;
             
             const now = new Date();
-            const currentHour = now.getHours();
-            const currentMinute = now.getMinutes();
+            const minutes = getMinutesSinceMidnight(now);
             
-            if (currentHour === 19 && currentMinute >= 0 && currentMinute < 5 && !sentNotifications.reminder1) {
-                showNotification(`🔔 Reminder for ${userId}: Attendance input window is now OPEN! Please update room attendance until 9:00 PM.`, 'info', 10000);
+            if (minutes >= ALLOWED_START_MINUTES && minutes < ALLOWED_START_MINUTES + 5 && !sentNotifications.reminder1) {
+                showNotification(`🔔 Reminder for ${userId}: Attendance input window is now OPEN! Please update room attendance until 10:00 PM.`, 'info', 10000);
                 sendEmailReminder('first');
                 sentNotifications.reminder1 = true;
             }
-            else if (currentHour === 20 && currentMinute >= 0 && currentMinute < 5 && !sentNotifications.reminder2) {
-                showNotification(`⏰ Second Reminder for ${userId}: Only 1 hour left! Attendance window closes at 9:00 PM.`, 'warning', 10000);
+            else if (minutes >= SECOND_REMINDER_MINUTES && minutes < SECOND_REMINDER_MINUTES + 5 && !sentNotifications.reminder2) {
+                showNotification(`⏰ Second Reminder for ${userId}: Only 1 hour left! Attendance window closes at 10:00 PM.`, 'warning', 10000);
                 sendEmailReminder('second');
                 sentNotifications.reminder2 = true;
             }
-            else if (currentHour === 20 && currentMinute >= 45 && currentMinute < 50 && !sentNotifications.reminder3) {
-                showNotification(`🚨 FINAL Reminder for ${userId}: Only 15 minutes left to submit attendance! Window closes at 9:00 PM.`, 'danger', 12000);
+            else if (minutes >= FINAL_REMINDER_MINUTES && minutes < FINAL_REMINDER_MINUTES + 5 && !sentNotifications.reminder3) {
+                showNotification(`🚨 FINAL Reminder for ${userId}: Only 15 minutes left to submit attendance! Window closes at 10:00 PM.`, 'danger', 12000);
                 sendEmailReminder('final');
                 sentNotifications.reminder3 = true;
             }
             
-            if (currentHour < 19 || currentHour >= 21) {
+            if (minutes < ALLOWED_START_MINUTES || minutes >= ALLOWED_END_MINUTES) {
                 sentNotifications = {
                     reminder1: false,
                     reminder2: false,
@@ -410,7 +416,7 @@
                 type: type,
                 timestamp: new Date().toISOString(),
                 date: getTodayDateKey(),
-                message: type === 'first' ? 'Attendance window is now open (7:00 PM - 9:00 PM)' :
+                message: type === 'first' ? 'Attendance window is now open (6:30 PM - 10:00 PM)' :
                          type === 'second' ? 'Only 1 hour left to submit attendance' :
                          'Final reminder: 15 minutes left to submit attendance'
             };
@@ -773,7 +779,7 @@
             if (!db) return;
 
             if (!isWithinAllowedTime()) {
-                displayError('Attendance can only be updated between 7:00 PM to 9:00 PM.');
+                displayError('Attendance can only be updated between 6:30 PM to 10:00 PM.');
                 return;
             }
 
