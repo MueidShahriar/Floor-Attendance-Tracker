@@ -70,10 +70,6 @@
             </div>
         </div>
 
-        <button id="mobile-back-to-top" class="back-to-top-btn" type="button" aria-label="Back to top">
-            ↑ Back to top
-        </button>
-
         <div id="error-message" class="max-w-6xl mx-auto mt-6 p-4 bg-red-50 border border-red-200 text-red-700 rounded-xl hidden" role="alert">
             <p class="font-bold">Error:</p>
             <p id="error-text" class="text-sm"></p>
@@ -208,7 +204,6 @@
         const todayBtn = document.getElementById('today-btn');
         const viewModeIndicator = document.getElementById('view-mode-indicator');
         const notificationContainer = document.getElementById('notification-container');
-        const backToTopBtn = document.getElementById('mobile-back-to-top');
         
         const activityLogModal = document.getElementById('activity-log-modal');
         const closeActivityLog = document.getElementById('close-activity-log');
@@ -901,24 +896,6 @@
                 const isDark = document.documentElement.classList.contains('dark');
                 applyTheme(!isDark);
             });
-        }
-
-        if (backToTopBtn) {
-            backToTopBtn.addEventListener('click', () => {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            });
-
-            const toggleBackToTopVisibility = () => {
-                if (window.innerWidth <= 640) {
-                    backToTopBtn.classList.toggle('visible', window.scrollY > 200);
-                } else {
-                    backToTopBtn.classList.remove('visible');
-                }
-            };
-
-            window.addEventListener('scroll', toggleBackToTopVisibility);
-            window.addEventListener('resize', toggleBackToTopVisibility);
-            toggleBackToTopVisibility();
         }
 
         function updateRoomBadge(roomNumber, count) {
