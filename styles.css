@@ -12,6 +12,9 @@ body {
     --muted: #6b7280;
     --accent: #6366f1;
     --danger: #ef4444;
+    --theme-primary: #6366f1;
+    --theme-secondary: #7c3aed;
+    --theme-gradient: linear-gradient(135deg, #6366f1 0%, #7c3aed 100%);
 }
 
 .dark {
@@ -86,16 +89,21 @@ body, .dark body {
 }
 
 .theme-toggle {
-    font-weight: 600;
-    letter-spacing: 0.01em;
-    border: 1px solid rgba(99,102,241,0.3);
-    color: #4c52f4;
-    padding: 6px 14px;
+    font-size: 1.5rem;
+    border: none;
+    background: transparent;
+    padding: 4px 8px;
+    cursor: pointer;
+    transition: transform 0.2s ease, filter 0.2s ease;
 }
 
-.theme-toggle.is-dark {
-    border-color: rgba(255,255,255,0.6);
-    color: #f3f4ff;
+.theme-toggle:hover {
+    transform: scale(1.2) rotate(15deg);
+    filter: drop-shadow(0 0 8px rgba(255, 200, 50, 0.6));
+}
+
+.theme-toggle.is-dark:hover {
+    filter: drop-shadow(0 0 8px rgba(255, 255, 100, 0.8));
 }
 
 .btn:focus {
@@ -222,7 +230,24 @@ body, .dark body {
     height: 100%;
     width: 0%;
     background: linear-gradient(90deg, #10b981 0%, #059669 100%);
-    transition: width 400ms ease-in-out, background 200ms ease;
+    transition: width 600ms cubic-bezier(0.34, 1.56, 0.64, 1), background 200ms ease;
+    position: relative;
+}
+
+.progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
 }
 
 /* Total count pop animation */
@@ -810,4 +835,293 @@ input[type="date"] {
     .mobile-controls .inc-btn, .mobile-controls .dec-btn { width: 22px; height: 22px; }
     #total-count-display { font-size: 2.5rem; }
     .room-card { padding: 6px; }
+}
+
+/* ============================================
+   NEW FEATURES STYLES
+   ============================================ */
+
+/* Confetti Canvas */
+.confetti-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9998;
+}
+
+/* Countdown Timer */
+.countdown-container {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(124, 58, 237, 0.1) 100%);
+    border: 2px solid rgba(99, 102, 241, 0.2);
+    border-radius: 16px;
+    padding: 16px 24px;
+    display: inline-block;
+    margin: 0 auto;
+    backdrop-filter: blur(8px);
+}
+
+.countdown-timer {
+    font-family: 'Inter', monospace;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-shadow: 0 2px 10px rgba(99, 102, 241, 0.3);
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.countdown-timer.pulse {
+    animation: countdownPulse 1s ease-in-out infinite;
+}
+
+@keyframes countdownPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.countdown-label {
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.countdown-status {
+    margin-top: 4px;
+    font-weight: 500;
+}
+
+.dark .countdown-container {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(124, 58, 237, 0.15) 100%);
+    border-color: rgba(99, 102, 241, 0.3);
+}
+
+/* Room Search */
+.room-search-container {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.room-search-container .relative {
+    position: relative;
+    display: inline-block;
+}
+
+.search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1rem;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.room-search-input {
+    padding-left: 40px;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    background: white;
+}
+
+.room-search-input:focus {
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+    border-color: var(--theme-primary);
+}
+
+.clear-search-btn {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0,0,0,0.1);
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.clear-search-btn:hover {
+    background: rgba(0,0,0,0.2);
+}
+
+.dark .room-search-input {
+    background: rgba(255,255,255,0.05);
+    border-color: rgba(255,255,255,0.1);
+}
+
+.dark .clear-search-btn {
+    background: rgba(255,255,255,0.1);
+    color: white;
+}
+
+.room-hidden {
+    display: none !important;
+}
+
+/* Color Picker */
+.color-picker-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.color-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    border-radius: 12px;
+    padding: 8px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+    display: flex;
+    gap: 6px;
+    z-index: 100;
+    margin-top: 8px;
+}
+
+.color-dropdown::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 6px solid white;
+}
+
+.color-option {
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    background: transparent;
+}
+
+.color-option:hover {
+    transform: scale(1.2);
+}
+
+.color-option.active {
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.4);
+    transform: scale(1.1);
+}
+
+.dark .color-dropdown {
+    background: #1e293b;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+}
+
+.dark .color-dropdown::before {
+    border-bottom-color: #1e293b;
+}
+
+/* Sound Toggle */
+#sound-toggle {
+    font-size: 1.3rem;
+    transition: transform 0.2s ease;
+}
+
+#sound-toggle:hover {
+    transform: scale(1.15);
+}
+
+/* Color Picker Button */
+#color-picker-btn {
+    font-size: 1.3rem;
+    transition: transform 0.2s ease;
+}
+
+#color-picker-btn:hover {
+    transform: scale(1.15) rotate(15deg);
+}
+
+/* Enhanced Progress Bar for Full Rooms */
+.progress-fill.full {
+    background: linear-gradient(90deg, #10b981 0%, #34d399 50%, #10b981 100%);
+    background-size: 200% 100%;
+    animation: fullProgress 2s linear infinite;
+}
+
+@keyframes fullProgress {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
+}
+
+/* Room card glow when full */
+.room-card.room-full {
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+    border-color: rgba(16, 185, 129, 0.3);
+}
+
+/* Header buttons responsive */
+@media (max-width: 480px) {
+    .color-picker-wrapper,
+    #sound-toggle {
+        display: none;
+    }
+    
+    .countdown-container {
+        padding: 12px 16px;
+    }
+    
+    .countdown-timer {
+        font-size: 1.5rem;
+    }
+    
+    .room-search-input {
+        max-width: 200px;
+    }
+}
+
+/* Smooth animations for all interactive elements */
+.btn, .room-card, .input-number, .room-search-input {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Ripple effect for buttons */
+.btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255,255,255,0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s ease, height 0.3s ease;
+}
+
+.btn:active::after {
+    width: 200px;
+    height: 200px;
+}
+
+/* Input focus animation */
+.input-number:focus {
+    animation: inputFocus 0.3s ease;
+}
+
+@keyframes inputFocus {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+    100% { transform: scale(1); }
 }
