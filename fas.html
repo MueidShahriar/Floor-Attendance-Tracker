@@ -17,7 +17,6 @@
         </div>
     </div>
 
-    <!-- Confetti Canvas -->
     <canvas id="confetti-canvas" class="confetti-canvas"></canvas>
 
     <div id="app" class="min-h-screen pt-2 px-4 sm:pt-4 sm:px-6">
@@ -26,12 +25,14 @@
         </div>
 
         <div class="max-w-6xl mx-auto mb-6">
-            <header class="app-header p-3 sm:p-4 flex items-center gap-0 mb-3">
-                <div class="flex items-center gap-0 flex-wrap">
+            <header class="app-header p-3 sm:p-4 flex flex-col sm:flex-row items-start sm:items-center gap-2 mb-3">
+                <div class="flex flex-col gap-2 w-full">
                     <div class="flex items-center gap-0">
                         <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-900 mr-2">Floor Attendance Manager</h1>
+                    </div>
+                    <div class="flex items-center gap-2">
                         <button id="theme-toggle" aria-pressed="false" aria-label="Toggle theme" class="btn btn-ghost btn-compact theme-toggle" title="Toggle theme">🌙</button>
-                        <div class="color-picker-wrapper ml-2">
+                        <div class="color-picker-wrapper">
                             <button id="color-picker-btn" class="btn btn-ghost btn-compact" title="Theme Color">🎨</button>
                             <div id="color-picker-dropdown" class="color-dropdown hidden">
            
@@ -43,9 +44,8 @@
                                 
                             </div>
                         </div>
-                        <button id="sound-toggle" class="btn btn-ghost btn-compact ml-2" title="Toggle Sound">🔊</button>
+                        <button id="sound-toggle" class="btn btn-ghost btn-compact" title="Toggle Sound">🔊</button>
                     </div>
-                    <p class="text-xs text-gray-500 w-full">Realtime floor-level attendance tracking</p>
                 </div>
             </header>
 
@@ -79,7 +79,6 @@
             <p id="date-display" class="text-xs text-gray-500 mt-1 text-center"></p>
             <p id="time-note" class="text-sm font-bold text-red-600 mt-1 text-center">Note: Attendance input is only allowed between 7:00 PM to 9:30 PM.</p>
             
-            <!-- Countdown Timer -->
             <div id="countdown-container" class="countdown-container mt-3 text-center hidden">
                 <div class="countdown-label text-sm text-gray-600">⏰ Input Window</div>
                 <div id="countdown-timer" class="countdown-timer text-2xl font-bold text-indigo-600">--:--:--</div>
@@ -90,7 +89,6 @@
         <div id="room-container" class="max-w-6xl mx-auto">
             <h2 class="text-xl font-bold text-gray-800 mb-4">Room Attendance Inputs</h2>
             
-            <!-- Room Search -->
             <div class="room-search-container mb-4">
                 <div class="relative">
                     <span class="search-icon">🔍</span>

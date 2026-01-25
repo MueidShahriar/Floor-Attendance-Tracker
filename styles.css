@@ -29,7 +29,6 @@ body, .dark body {
     background-color: var(--bg);
 }
 
-/* App header */
 .app-header {
     display: flex;
     align-items: center;
@@ -37,7 +36,6 @@ body, .dark body {
     gap: 12px;
 }
 
-/* Button system */
 .btn {
     display: inline-flex;
     align-items: center;
@@ -186,7 +184,6 @@ body, .dark body {
     justify-content: space-between;
 }
 
-/* Ensure room title stays on one line and number doesn't wrap */
 .room-title {
     white-space: nowrap;
     display: inline-flex;
@@ -218,7 +215,6 @@ body, .dark body {
     box-shadow: 0 6px 18px rgba(76, 82, 244, 0.08);
 }
 
-/* Progress bar styles */
 .progress-track {
     background: rgba(15,23,42,0.05);
     border-radius: 999px;
@@ -250,7 +246,6 @@ body, .dark body {
     100% { transform: translateX(100%); }
 }
 
-/* Total count pop animation */
 .count-pop {
     animation: pop 520ms cubic-bezier(.2,.8,.2,1);
 }
@@ -261,7 +256,6 @@ body, .dark body {
     100% { transform: scale(1); }
 }
 
-/* Footer */
 .app-footer {
     max-width: 6xl;
     margin: 28px auto 12px auto;
@@ -270,17 +264,14 @@ body, .dark body {
     font-size: 0.875rem;
 }
 
-/* Datepicker small tweak */
 input[type="date"] {
     appearance: none;
 }
 
-/* Dark mode fixes for progress and labels */
 .dark .progress-track { background: rgba(255,255,255,0.04); }
 .dark .progress-fill { background: linear-gradient(90deg, #34d399 0%, #10b981 100%); }
 .dark .progress-label { color: rgba(255,255,255,0.78); }
 
-/* brief saved animation for inputs */
 .input-saved {
     transform: scale(1.01);
     box-shadow: 0 8px 24px rgba(16,185,129,0.12);
@@ -288,7 +279,6 @@ input[type="date"] {
     transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
 }
 
-/* Badges for room status */
 .room-badge {
     font-size: 0.75rem;
     padding: 6px 10px;
@@ -304,7 +294,6 @@ input[type="date"] {
 .badge-warning { background: linear-gradient(90deg, #f59e0b 0%, #d97706 100%); }
 .badge-full    { background: linear-gradient(90deg, #ef4444 0%, #dc2626 100%); }
 
-/* compact dot-only badge for 'Open' rooms */
 .room-badge.badge-dot-only {
     min-width: 0 !important;
     width: 32px;
@@ -326,37 +315,30 @@ input[type="date"] {
     background: linear-gradient(90deg, #10b981 0%, #059669 100%);
 }
 
-/* color variants for dot badges */
 .badge-dot--normal { background: linear-gradient(90deg, #10b981 0%, #059669 100%); }
 .badge-dot--warning { background: linear-gradient(90deg, #f59e0b 0%, #d97706 100%); }
 .badge-dot--danger  { background: linear-gradient(90deg, #ef4444 0%, #dc2626 100%); }
 
-/* slightly larger dot for warning/danger to remain visible */
 .badge-dot--warning, .badge-dot--danger { width: 12px; height: 12px; }
 
-/* Hide visual badges entirely (no dot/text shown). Markup remains for accessibility or future use. */
 .room-badge {
     display: none !important;
 }
 
-/* Dark mode overrides */
 .dark .room-card { background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.03)); border-color: rgba(255,255,255,0.04); box-shadow: none; }
 .dark .input-number { background: rgba(255,255,255,0.02); color: var(--accent); border-color: rgba(255,255,255,0.04); }
 .dark .gradient-card { background: linear-gradient(135deg, #4f46e5 0%, #6d28d9 100%); }
 .dark .app-header { background: rgba(255,255,255,0.02); }
 
-/* Keep the time-note prominently red in dark mode */
 .dark #time-note {
     color: #ef4444 !important;
 }
 
-/* Make elements with `bg-white` adapt in dark mode */
 .dark .bg-white {
     background: rgba(255,255,255,0.03) !important;
     border: 1px solid rgba(255,255,255,0.04);
 }
 
-/* Inputs, selects and date pickers in dark mode */
 .dark input,
 .dark input[type="date"],
 .dark select,
@@ -366,25 +348,21 @@ input[type="date"] {
     border: 1px solid rgba(255,255,255,0.06) !important;
 }
 
-/* Make native date-picker icon visible in dark mode */
 .dark input::-webkit-calendar-picker-indicator {
     filter: invert(1) brightness(2) !important;
 }
 
-/* Ensure .btn-ghost is visible on dark backgrounds */
 .dark .btn-ghost {
     background: rgba(255,255,255,0.03);
     color: rgba(255,255,255,0.92);
     border-color: rgba(255,255,255,0.06);
 }
 
-/* Ensure readable text in dark mode (override utility classes) */
 .dark body,
 .dark body * {
     color: rgba(255,255,255,0.92) !important;
 }
 
-/* Target common gray text utility classes to ensure contrast */
 .dark .text-gray-900,
 .dark .text-gray-800,
 .dark .text-gray-700,
@@ -396,7 +374,6 @@ input[type="date"] {
     color: rgba(255,255,255,0.92) !important;
 }
 
-/* Keep muted small text slightly less bright */
 .dark .text-xs,
 .dark .text-sm {
     color: rgba(255,255,255,0.78) !important;
@@ -478,7 +455,6 @@ input[type="date"] {
     transform: translateX(4px);
 }
 
-/* Responsive tweaks */
 @media (max-width: 640px) {
     .room-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .app-header { flex-direction: column; align-items: flex-start; gap: 8px; }
@@ -514,13 +490,10 @@ input[type="date"] {
 }
 
 @media (min-width: 768px) {
-    /* on wider screens keep them stacked but narrower for aesthetics */
     .date-row { max-width: 420px; }
     .date-row button, .date-row .btn { width: auto; align-self: flex-end; }
 }
 
-/* Force a strict 3-line layout for the date area across all sizes.
-   This ensures: line1 = label, line2 = date input, line3 = Today button. */
 .date-row {
     flex-direction: column !important;
 }
@@ -528,11 +501,9 @@ input[type="date"] {
 .date-row input[type="date"] { display: block; width: 100% !important; max-width: 100% !important; }
 .date-row button, .date-row .btn { display: block; width: 100% !important; }
 
-/* Keep a little spacing so the stacked rows look clean */
 .date-row > * { margin: 0; }
 .date-row > * + * { margin-top: 8px; }
 
-/* Android / small-screen improvements */
 @media (max-width: 480px) {
     :root { --card-padding: 12px; }
 
@@ -540,18 +511,15 @@ input[type="date"] {
 
     .max-w-6xl { padding-left: 8px; padding-right: 8px; }
 
-    /* Make header compact and friendly for touch */
     .app-header { padding: 12px; gap: 8px; }
     .app-header .logo { font-size: 20px; }
     .app-header h1 { font-size: 1.125rem; }
     .app-header p { font-size: 0.7rem; }
 
-    /* Room cards stretch full width for easier tapping */
     .room-grid { grid-template-columns: repeat(1, 1fr); gap: 14px; }
 
     .room-card { padding: 16px; border-radius: 18px; }
 
-    /* Inputs larger clickable area */
     .input-number {
         font-size: 2rem;
         padding: 12px 16px;
@@ -559,22 +527,17 @@ input[type="date"] {
         min-width: 80px;
     }
 
-    /* Progress bar slightly smaller */
     .progress-track { height: 8px; }
     .progress-label { font-size: 11px; }
 
-    /* Make total count slightly smaller to fit */
     #total-count-display { font-size: 3.5rem; }
 
-    /* Buttons stretch to comfortable tap targets */
     .btn, .btn-lg { padding: 10px 12px; font-size: 0.95rem; }
 
-    /* Footer small */
     .app-footer { font-size: 0.8rem; margin: 18px auto 8px auto; }
 }
 
 @media (max-width: 360px) {
-    /* Very small devices: single column room cards */
     .room-grid { grid-template-columns: repeat(1, 1fr); gap: 8px; }
 
     .input-number {
@@ -592,7 +555,6 @@ input[type="date"] {
     .room-badge { min-width: 52px; font-size: 0.7rem; padding: 5px 8px; }
 }
 
-/* Controls styling */
 .mobile-controls .inc-btn,
 .mobile-controls .dec-btn {
     width: 36px;
@@ -608,7 +570,6 @@ input[type="date"] {
 .mobile-controls .inc-btn { transform: translateY(-1px); }
 .mobile-controls .dec-btn { transform: translateY(1px); }
 
-/* Ensure buttons are tappable on mobile */
 @media (max-width: 480px) {
     .mobile-controls .inc-btn,
     .mobile-controls .dec-btn {
@@ -716,15 +677,11 @@ input[type="date"] {
     display: block;
 }
 
-/* Extra compact mobile adjustments (tighten sizes and spacing) */
 @media (max-width: 420px) {
-    /* single-column cards for maximum width */
     .room-grid { grid-template-columns: repeat(1, 1fr); gap: 12px; }
 
-    /* larger room cards */
     .room-card { padding: 14px; border-radius: 16px; }
 
-    /* compact numeric input: fixed small square */
     .input-number {
         font-size: 2rem;
         padding: 12px 16px;
@@ -735,22 +692,17 @@ input[type="date"] {
 
     .input-with-controls { gap: 6px; align-items: center; }
 
-    /* move mobile controls to horizontal and make them smaller */
     .mobile-controls { flex-direction: row; }
     .mobile-controls .inc-btn,
     .mobile-controls .dec-btn { width: 28px; height: 28px; font-size: 12px; border-radius: 6px; }
 
-    /* thinner progress bar */
     .progress-track { height: 6px; }
     .progress-label { font-size: 10px; }
 
-    /* slightly smaller total display */
     #total-count-display { font-size: 2.8rem; }
 
-    /* compact gradient card */
     .gradient-card { padding: 14px 12px; border-radius: 16px; }
 
-    /* hide small descriptive text in header to save vertical space */
     .app-header p { display: none; }
     .app-header { padding: 8px; gap: 6px; }
 
@@ -758,7 +710,6 @@ input[type="date"] {
 }
 
 @media (max-width: 320px) {
-    /* ultra compact for very small devices */
     .room-grid { grid-template-columns: repeat(1, 1fr); gap: 6px; }
     .input-number {
         width: clamp(90px, 70vw, 150px);
@@ -769,15 +720,11 @@ input[type="date"] {
     #total-count-display { font-size: 2.6rem; }
 }
 
-/* More aggressive compacting for small/mobile screens */
 @media (max-width: 420px) {
-    /* keep single column but slightly tighter gap */
     .room-grid { grid-template-columns: repeat(1, 1fr); gap: 10px; }
 
-    /* ensure cards stay roomy */
     .room-card { padding: 12px; border-radius: 14px; min-height: 110px; }
 
-    /* very compact numeric input */
     .input-number {
         font-size: 2rem;
         padding: 12px 16px;
@@ -787,44 +734,34 @@ input[type="date"] {
 
     .input-with-controls { gap: 6px; align-items: center; }
 
-    /* place mobile controls horizontally and shrink */
     .mobile-controls { flex-direction: row; gap: 6px; }
     .mobile-controls .inc-btn,
     .mobile-controls .dec-btn { width: 24px; height: 24px; font-size: 12px; border-radius: 6px; padding: 0; }
 
-    /* thinner progress bar */
     .progress-track { height: 5px; }
     .progress-label { font-size: 10px; }
 
-    /* smaller total display and card */
     #total-count-display { font-size: 2.7rem; }
     .gradient-card { padding: 10px 10px; border-radius: 12px; }
 
-    /* remove extra header detail to save vertical space */
     .app-header p { display: none; }
     .app-header { padding: 6px; gap: 6px; }
 
-    /* reduce badge footprint (hidden visually already but keep space small) */
     .room-badge { width: 0; height: 0; padding: 0; margin: 0; }
 
-    /* reduce text sizes inside cards */
     .room-card .text-lg { font-size: 1rem; }
     .room-card .text-sm { font-size: 0.72rem; }
 
-    /* reduce box shadows a bit to lower visual weight */
     .room-card { box-shadow: 0 3px 8px rgba(0,0,0,0.06); }
 }
 
-/* Hide the stacked inc/dec controls on narrow mobile screens to reduce clutter */
 @media (max-width: 420px) {
     .mobile-controls { display: none !important; }
-    /* make sure input remains centered and clickable */
     .input-with-controls { justify-content: center; }
     .input-number { margin-right: 0; }
 }
 
 @media (max-width: 360px) {
-    /* single column and extra compact */
     .room-grid { grid-template-columns: repeat(1, 1fr); gap: 6px; }
     .input-number {
         width: clamp(90px, 65vw, 150px);
@@ -837,11 +774,6 @@ input[type="date"] {
     .room-card { padding: 6px; }
 }
 
-/* ============================================
-   NEW FEATURES STYLES
-   ============================================ */
-
-/* Confetti Canvas */
 .confetti-canvas {
     position: fixed;
     top: 0;
@@ -852,14 +784,16 @@ input[type="date"] {
     z-index: 9998;
 }
 
-/* Countdown Timer */
 .countdown-container {
-    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(124, 58, 237, 0.1) 100%);
-    border: 2px solid rgba(99, 102, 241, 0.2);
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(124, 58, 237, 0.1) 100%);    border: 2px solid rgba(99, 102, 241, 0.2);
     border-radius: 16px;
     padding: 16px 24px;
-    display: inline-block;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     margin: 0 auto;
+    width: fit-content;
     backdrop-filter: blur(8px);
 }
 
@@ -895,7 +829,6 @@ input[type="date"] {
     border-color: rgba(99, 102, 241, 0.3);
 }
 
-/* Room Search */
 .room-search-container {
     display: flex;
     justify-content: flex-start;
@@ -964,7 +897,6 @@ input[type="date"] {
     display: none !important;
 }
 
-/* Color Picker */
 .color-picker-wrapper {
     position: relative;
     display: inline-block;
@@ -1028,7 +960,6 @@ input[type="date"] {
     border-bottom-color: #1e293b;
 }
 
-/* Sound Toggle */
 #sound-toggle {
     font-size: 1.3rem;
     transition: transform 0.2s ease;
@@ -1038,7 +969,6 @@ input[type="date"] {
     transform: scale(1.15);
 }
 
-/* Color Picker Button */
 #color-picker-btn {
     font-size: 1.3rem;
     transition: transform 0.2s ease;
@@ -1048,7 +978,6 @@ input[type="date"] {
     transform: scale(1.15) rotate(15deg);
 }
 
-/* Enhanced Progress Bar for Full Rooms */
 .progress-fill.full {
     background: linear-gradient(90deg, #10b981 0%, #34d399 50%, #10b981 100%);
     background-size: 200% 100%;
@@ -1060,17 +989,16 @@ input[type="date"] {
     100% { background-position: 200% 50%; }
 }
 
-/* Room card glow when full */
 .room-card.room-full {
     box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
     border-color: rgba(16, 185, 129, 0.3);
 }
 
-/* Header buttons responsive */
 @media (max-width: 480px) {
     .color-picker-wrapper,
-    #sound-toggle {
-        display: none;
+    #sound-toggle,
+    #theme-toggle {
+        display: inline-flex !important;
     }
     
     .countdown-container {
@@ -1086,12 +1014,10 @@ input[type="date"] {
     }
 }
 
-/* Smooth animations for all interactive elements */
 .btn, .room-card, .input-number, .room-search-input {
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Ripple effect for buttons */
 .btn {
     position: relative;
     overflow: hidden;
@@ -1115,7 +1041,6 @@ input[type="date"] {
     height: 200px;
 }
 
-/* Input focus animation */
 .input-number:focus {
     animation: inputFocus 0.3s ease;
 }

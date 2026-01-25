@@ -1,11 +1,7 @@
-// Floor Attendance Tracker - Main Application Script
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
 import { getDatabase, ref, set, onValue, update, get } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-analytics.js";
 
-// ============================================
-// CONFIGURATION
-// ============================================
 const appId = typeof __app_id !== 'undefined' ? __app_id : 'floor-attendance-system';
 
 const firebaseConfig = {
@@ -19,9 +15,6 @@ const firebaseConfig = {
     measurementId: "G-RZ8YDY6F4S"
 };
 
-// ============================================
-// STATE VARIABLES
-// ============================================
 let db;
 let userId = 'system';
 let userEmail = 'system@attendance.local';
@@ -37,20 +30,15 @@ let sentNotifications = {
 let activityLog = [];
 let displayedCounts = {};
 
-// Time restriction settings
 const ALLOW_TIME_LIMIT = true;
-const ALLOWED_START_MINUTES = (18 * 60) + 30; // 6:30 PM
-const ALLOWED_END_MINUTES = 22 * 60;          // 10:00 PM
-const SECOND_REMINDER_MINUTES = ALLOWED_END_MINUTES - 60; // 1 hour left
-const FINAL_REMINDER_MINUTES = ALLOWED_END_MINUTES - 15;  // 15 minutes left
+const ALLOWED_START_MINUTES = (18 * 60) + 30;
+const ALLOWED_END_MINUTES = 22 * 60;
+const SECOND_REMINDER_MINUTES = ALLOWED_END_MINUTES - 60;
+const FINAL_REMINDER_MINUTES = ALLOWED_END_MINUTES - 15;
 
-// Room configuration
 const ROOMS = Array.from({ length: 16 }, (_, i) => 402 + i);
 const MAX_CAPACITY = ROOMS.length * 6;
 
-// ============================================
-// SOUND EFFECTS SYSTEM
-// ============================================
 let soundEnabled = localStorage.getItem('fas_sound') !== 'false';
 let audioContext;
 
@@ -109,9 +97,6 @@ function playSound(type) {
     }
 }
 
-// ============================================
-// CONFETTI SYSTEM
-// ============================================
 const confettiCanvas = document.getElementById('confetti-canvas');
 const confettiCtx = confettiCanvas ? confettiCanvas.getContext('2d') : null;
 let confettiParticles = [];
@@ -186,9 +171,6 @@ function launchConfetti() {
     playSound('celebration');
 }
 
-// ============================================
-// PUSH NOTIFICATIONS SYSTEM
-// ============================================
 let notificationPermission = 'default';
 
 async function requestNotificationPermission() {
@@ -211,9 +193,6 @@ function sendBrowserNotification(title, body, icon = '📋') {
     }
 }
 
-// ============================================
-// COUNTDOWN TIMER SYSTEM
-// ============================================
 const countdownContainer = document.getElementById('countdown-container');
 const countdownTimer = document.getElementById('countdown-timer');
 const countdownStatus = document.getElementById('countdown-status');
@@ -260,9 +239,6 @@ function updateCountdown() {
     }
 }
 
-// ============================================
-// ROOM SEARCH SYSTEM
-// ============================================
 const roomSearch = document.getElementById('room-search');
 const clearSearchBtn = document.getElementById('clear-search');
 
@@ -305,9 +281,6 @@ if (clearSearchBtn) {
     });
 }
 
-// ============================================
-// COLOR THEME SYSTEM
-// ============================================
 const colorPickerBtn = document.getElementById('color-picker-btn');
 const colorDropdown = document.getElementById('color-picker-dropdown');
 const colorOptions = document.querySelectorAll('.color-option');
@@ -367,9 +340,6 @@ document.addEventListener('click', () => {
     if (colorDropdown) colorDropdown.classList.add('hidden');
 });
 
-// ============================================
-// SOUND TOGGLE
-// ============================================
 const soundToggle = document.getElementById('sound-toggle');
 
 function updateSoundToggle() {
@@ -388,9 +358,6 @@ if (soundToggle) {
     });
 }
 
-// ============================================
-// UTILITY FUNCTIONS
-// ============================================
 function getTodayDateKey() {
     const today = new Date();
     const year = today.getFullYear();
@@ -427,9 +394,6 @@ function isWithinAllowedTime() {
     return minutes >= ALLOWED_START_MINUTES && minutes < ALLOWED_END_MINUTES;
 }
 
-// ============================================
-// DOM ELEMENTS
-// ============================================
 const totalCountDisplay = document.getElementById('total-count-display');
 const roomGrid = document.getElementById('room-grid');
 const loadingStatus = document.getElementById('loading-status');
@@ -448,9 +412,6 @@ const logDateFilter = document.getElementById('log-date-filter');
 const logUserFilter = document.getElementById('log-user-filter');
 const logRoomFilter = document.getElementById('log-room-filter');
 
-// ============================================
-// ERROR HANDLING
-// ============================================
 function displayError(message) {
     console.error(message);
     if (errorText) errorText.textContent = message;
@@ -458,9 +419,6 @@ function displayError(message) {
     if (loadingStatus) loadingStatus.classList.add('hidden');
 }
 
-// ============================================
-// ACTIVITY LOG SYSTEM
-// ============================================
 if (logDateFilter) logDateFilter.addEventListener('change', () => filterActivityLog());
 if (logUserFilter) logUserFilter.addEventListener('change', () => filterActivityLog());
 if (logRoomFilter) logRoomFilter.addEventListener('change', () => filterActivityLog());
@@ -580,9 +538,6 @@ function displayActivityLog(logs) {
     }).join('');
 }
 
-// ============================================
-// NOTIFICATION SYSTEM
-// ============================================
 function showNotification(message, type = 'info', duration = 5000) {
     if (!notificationContainer) return;
     
@@ -689,9 +644,6 @@ async function sendEmailReminder(type) {
     }
 }
 
-// ============================================
-// PAGE LOADER
-// ============================================
 function hidePageLoader() {
     const loader = document.getElementById('page-loader');
     if (loader && !loader.classList.contains('hidden')) {
@@ -704,9 +656,6 @@ function hidePageLoader() {
     }
 }
 
-// ============================================
-// FIREBASE INITIALIZATION
-// ============================================
 async function initializeFirebase() {
     try {
         if (Object.keys(firebaseConfig).length === 0) {
@@ -734,9 +683,6 @@ async function initializeFirebase() {
     }
 }
 
-// ============================================
-// ROOM CARD RENDERING
-// ============================================
 function renderRoomCard(roomNumber, currentCount) {
     const docId = `room_${roomNumber}`;
     const existingCard = document.getElementById(docId);
@@ -835,9 +781,6 @@ function calculateTotal(attendanceData) {
     }
 }
 
-// ============================================
-// REALTIME LISTENER
-// ============================================
 function setupRealtimeListener(dateKey = null) {
     if (!db) return;
 
@@ -924,9 +867,6 @@ function setupRealtimeListener(dateKey = null) {
     });
 }
 
-// ============================================
-// DATABASE OPERATIONS
-// ============================================
 async function seedInitialRooms() {
     if (!db) return;
     
@@ -1090,9 +1030,6 @@ async function updateAttendance(roomNumber, value) {
     }
 }
 
-// ============================================
-// DATE PICKER
-// ============================================
 function setDatePickerToToday() {
     if (!datePicker) return;
     const today = new Date();
@@ -1124,9 +1061,6 @@ function initializeDatePicker() {
     }
 }
 
-// ============================================
-// THEME SYSTEM
-// ============================================
 const themeToggle = document.getElementById('theme-toggle');
 
 function applyTheme(isDark) {
@@ -1162,9 +1096,6 @@ if (themeToggle) {
     });
 }
 
-// ============================================
-// ROOM BADGE & PROGRESS
-// ============================================
 function updateRoomBadge(roomNumber, count) {
     const badge = document.getElementById(`badge-${roomNumber}`);
     if (!badge) return;
@@ -1212,41 +1143,29 @@ function animateTotalChange() {
     el.classList.add('count-pop');
 }
 
-// ============================================
-// INITIALIZATION
-// ============================================
 function init() {
-    // Initialize sound toggle state
     updateSoundToggle();
     
-    // Initialize color theme from storage
     const savedColorTheme = localStorage.getItem('fas_color_theme') || 'indigo';
     applyColorTheme(savedColorTheme);
     
-    // Start countdown timer
     updateCountdown();
     setInterval(updateCountdown, 1000);
     
-    // Request notification permission on load
     requestNotificationPermission();
     
-    // Check input window notifications
     checkInputWindowAndNotify();
     setInterval(checkInputWindowAndNotify, 60000);
     
-    // Fallback page loader timeout
     setTimeout(() => {
         hidePageLoader();
     }, 8000);
     
-    // Render initial rooms and initialize
     renderInitialRooms();
     initializeFirebase();
     initializeDatePicker();
     
-    // Initialize theme
     initTheme();
 }
 
-// Start the application
 init();
