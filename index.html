@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Floor Attendance Tracker</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📋</text></svg>">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+
+    <div id="page-loader" class="page-loader">
+        <div class="loader-content">
+            <div class="spinner"></div>
+            <p class="loader-text">Loading Attendance System...</p>
+        </div>
+    </div>
+
+    <canvas id="confetti-canvas" class="confetti-canvas"></canvas>
+
+    <div id="app" class="min-h-screen pt-2 px-4 sm:pt-4 sm:px-6">
+
+        <div id="notification-container" class="fixed top-2 left-1/2 -translate-x-1/2 transform z-50 space-y-3 w-full max-w-md px-4">
+        </div>
+
+        <div class="max-w-6xl mx-auto mb-6">
+            <header class="app-header p-3 sm:p-4 flex flex-col sm:flex-row items-start sm:items-center gap-2 mb-3">
+                <div class="flex flex-col gap-2 w-full">
+                    <div class="flex items-center gap-0">
+                        <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-900 mr-2">Floor Attendance Manager</h1>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button id="theme-toggle" aria-pressed="false" aria-label="Toggle theme" class="btn btn-ghost btn-compact theme-toggle" title="Toggle theme">🌙</button>
+                        <div class="color-picker-wrapper">
+                            <button id="color-picker-btn" class="btn btn-ghost btn-compact" title="Theme Color">🎨</button>
+                            <div id="color-picker-dropdown" class="color-dropdown hidden">
+           
+                                <button class="color-option" data-color="blue" title="Blue">🔵</button>
+                                <button class="color-option" data-color="green" title="Green">🟢</button>
+                                <button class="color-option" data-color="purple" title="Purple">🟣</button>
+                                <button class="color-option" data-color="rose" title="Rose">🔴</button>
+                                <button class="color-option" data-color="indigo" title="Indigo">🟠</button>
+                                
+                            </div>
+                        </div>
+                        <button id="sound-toggle" class="btn btn-ghost btn-compact" title="Toggle Sound">🔊</button>
+                    </div>
+                </div>
+            </header>
+
+            <div class="bg-white p-3 sm:p-4 rounded-2xl shadow-md mb-3 max-w-xl mx-auto">
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-2">
+                    <div class="date-row w-full sm:max-w-md">
+                        <label for="date-picker" class="text-sm font-semibold text-gray-700">View Attendance for:</label>
+                        <input 
+                            type="date" 
+                            id="date-picker" 
+                            class="px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none transition-colors text-gray-700 font-medium"
+                        />
+                        <button 
+                            id="today-btn" 
+                            class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium shadow-sm"
+                        >
+                            Today
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="total-attendance-card" class="gradient-card p-6 sm:p-8 rounded-3xl shadow-xl mb-0">
+                <p class="text-sm uppercase font-medium text-white/90 mb-2 text-center tracking-wider">Total Students Present on Floor</p>
+                <div class="flex justify-center items-center">
+                    <span id="total-count-display" class="text-6xl sm:text-7xl font-bold text-white">0</span>
+                </div>
+            </div>
+
+            <p id="loading-status" class="text-sm text-gray-600 mt-1 text-center">Initializing database and loading data...</p>
+            <p id="date-display" class="text-xs text-gray-500 mt-1 text-center"></p>
+            <p id="time-note" class="text-sm font-bold text-red-600 mt-1 text-center">Note: Attendance input is only allowed between 7:00 PM to 9:30 PM.</p>
+            
+            <div id="countdown-container" class="countdown-container mt-3 text-center hidden">
+                <div class="countdown-label text-sm text-gray-600">⏰ Input Window</div>
+                <div id="countdown-timer" class="countdown-timer text-2xl font-bold text-indigo-600">--:--:--</div>
+                <div id="countdown-status" class="countdown-status text-xs text-gray-500">remaining</div>
+            </div>
+        </div>
+
+        <div id="room-container" class="max-w-6xl mx-auto">
+            <h2 class="text-xl font-bold text-gray-800 mb-4">Room Attendance Inputs</h2>
+            
+            <div class="room-search-container mb-4">
+                <div class="relative">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="room-search" placeholder="Search room number..." class="room-search-input px-10 py-2 border-2 border-gray-300 rounded-lg w-full max-w-xs focus:border-indigo-500 focus:outline-none transition-colors">
+                    <button id="clear-search" class="clear-search-btn hidden">✕</button>
+                </div>
+            </div>
+            
+            <div id="room-grid" class="room-grid grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+            </div>
+        </div>
+
+        <div id="error-message" class="max-w-6xl mx-auto mt-6 p-4 bg-red-50 border border-red-200 text-red-700 rounded-xl hidden" role="alert">
+            <p class="font-bold">Error:</p>
+            <p id="error-text" class="text-sm"></p>
+        </div>
+
+    </div>
+
+    <div id="activity-log-modal" class="fixed inset-0 bg-black bg-opacity-50 modal-backdrop flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-4xl w-full mx-4 max-h-[90vh] flex flex-col">
+            <div class="p-6 border-b border-gray-200 flex justify-between items-center">
+                <h2 class="text-2xl font-bold text-gray-900">Activity Log</h2>
+                <button id="close-activity-log" class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+            </div>
+            <div class="p-6 space-y-4">
+                <div class="flex gap-4 flex-wrap">
+                    <input 
+                        type="date" 
+                        id="log-date-filter" 
+                        class="px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none"
+                    />
+                    <select 
+                        id="log-user-filter" 
+                        class="px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none"
+                    >
+                        <option value="">All Users</option>
+                    </select>
+                    <select 
+                        id="log-room-filter" 
+                        class="px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none"
+                    >
+                        <option value="">All Rooms</option>
+                    </select>
+                </div>
+            </div>
+            <div class="flex-1 overflow-y-auto px-6 pb-6">
+                <div id="activity-log-content" class="space-y-2">
+                    <p class="text-center text-gray-500 py-8">Loading activity log...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script type="module" src="app.js"></script>
+</body>
+</html>
